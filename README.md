@@ -8,8 +8,7 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
 # This is a soft working in progress demo to give an overview of my react and Js mastering skill (v: 1.0)
-Some quality of life tools and best practice options are in curent dev like routes from 'react-router-don',
-ErrorBoudary and Lazy load...
+Some quality of life tools and best practice options are in curent dev like routes from 'react-router-don'...
 
 Feel free to take contact throw the following to see more or for any needs
 # Author: Roche Ngaleu,
