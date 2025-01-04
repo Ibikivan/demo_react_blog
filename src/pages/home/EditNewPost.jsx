@@ -7,7 +7,7 @@ import Alert from "../../components/Alert";
 import Spinner from "../../components/Spinner";
 import { handleSubmitPost, preventClickBehaviour } from "../../function";
 
-export default forwardRef(function EditNewPost({closeModal, buttonRef}, ref) {
+export default forwardRef(function EditNewPost({closeModal, buttonRef, addNewPost}, ref) {
 
     const url = new URL('https://jsonplaceholder.typicode.com/posts')
     const {isLoading, data, isError, fetchData} = useFetch(url.toString(), {
@@ -21,6 +21,7 @@ export default forwardRef(function EditNewPost({closeModal, buttonRef}, ref) {
 
     useEffect(() => {
         if (Object.keys(data).includes("userId")) {
+            addNewPost(data)
             setAddedPost(data)
             setTimeout(() => {
                 handleCancled()

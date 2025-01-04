@@ -4,7 +4,7 @@ import EditNewPost from './EditNewPost'
 import { handleCloseModal, handleOpenModal } from '../../function'
 import { useIntersecting } from '../../hooks'
 
-export default function AddPost({footerRef}) {
+export default function AddPost({footerRef, addNewPost}) {
 
     const modalRef = useRef(null)
     const buttonRef = useRef(null)
@@ -40,6 +40,6 @@ export default function AddPost({footerRef}) {
             <img src={add} alt="add icon" />
         </button>
 
-        <EditNewPost closeModal={handleCloseModal} ref={modalRef} buttonRef={buttonRef} />
+        <EditNewPost closeModal={handleCloseModal} ref={modalRef} buttonRef={buttonRef} addNewPost={addNewPost} />
     </div>
 }
