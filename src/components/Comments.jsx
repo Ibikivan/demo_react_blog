@@ -19,7 +19,6 @@ export default function Comments({postId}) {
     const spinnerRef = useRef(null)
     const pageRef = useRef(page)
     const url = `https://jsonplaceholder.typicode.com/comments`
-    // const url = `https://jsonplaceholder.typicode.com/posts/${postId}/comments`
 
     const {dataBuch, isDataEmpty} = useIncrementData(data, isError)
 

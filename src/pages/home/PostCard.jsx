@@ -1,19 +1,10 @@
-import defaultCover from '../../assets/default_cover.png'
+import { Link } from 'react-router-dom'
 import defaultCoverThumb from '../../assets/default_cover_thumb.png'
 
-export default function PostCard({cardWidth, post, setActiveNav}) {
+export default function PostCard({cardWidth, post}) {
 
     if (!post.cover) {
-        post.cover = defaultCover
         post.coverthumb = defaultCoverThumb
-    }
-
-    const handleClick = (e) => {
-        e.preventDefault()
-        setActiveNav({
-            page: "singlePost",
-            pageData: post
-        })
     }
 
     return <div className="card" style={{width: cardWidth}}>
@@ -21,7 +12,7 @@ export default function PostCard({cardWidth, post, setActiveNav}) {
         <div className="card-body">
             <h5 className="card-title">{post.title}</h5>
             <p className="card-text justify">{post.body}</p>
-            <a href="#" className="btn btn-primary" onClick={handleClick}>Lire...</a>
+            <Link to={`${post.id}`} className="btn btn-primary">Lire...</Link>
         </div>
     </div>
 }
