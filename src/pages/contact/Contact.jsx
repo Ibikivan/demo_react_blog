@@ -4,12 +4,20 @@ import CheckBox from "../../components/form/CheckBox";
 import InputText from "../../components/form/InputText";
 import TextArea from "../../components/form/TextArea";
 import PageTitle from "../../components/PageTitle";
+import { useEffect } from "react";
 
 export default function Contact() {
 
     const pageConfig = {
         pageTitle: "Contactez nous"
     }
+
+    useEffect(() => {
+        const prevTitle = document.title
+        document.title = pageConfig.pageTitle
+
+        return () => document.title = prevTitle
+    }, [])
 
     const handleSumbitForm = (e) => {
         e.preventDefault()

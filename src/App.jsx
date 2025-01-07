@@ -6,6 +6,7 @@ import Contact from './pages/contact/Contact'
 import SinglePost from './pages/singlePost/SinglePost'
 import Root from './pages/root/Root'
 import PageNotFound from './pages/not_found/PageNotFound'
+import { useFetch } from './hooks'
 
 function App() {
 
@@ -17,12 +18,13 @@ function App() {
       errorElement: <PageNotFound />,
       children: [
         {
-          path: '/',
+          path: '',
           element: <Home footerRef={footerRef} />
         },
         {
-          path: '/:id',
-          element: <SinglePost />
+          path: ':id',
+          element: <SinglePost />,
+          loader: ({params}) => fetch(`https://jsonplaceholder.typicode.com/posts/${params.id}`)
         },
         {
           path: 'contact',

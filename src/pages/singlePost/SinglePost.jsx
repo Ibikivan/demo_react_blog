@@ -1,26 +1,22 @@
 import Comments from "../../components/Comments"
 import PageTitle from "../../components/PageTitle"
 import defaultCover from '../../assets/default_cover.png'
-import { useParams } from "react-router-dom"
-import { useFetch } from "../../hooks"
-import Spinner from "../../components/Spinner"
+import { useLoaderData, useParams } from "react-router-dom"
+import { useEffect } from "react"
 
 export default function SinglePost() {
 
+    const data = useLoaderData()
     const { id } = useParams()
-    const { isLoading, isError, data } = useFetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
 
-    if (isLoading) {
-        return <div className="spinner_container">
-            <Spinner colorClassName='primary' />
-        </div>
-    }
+    useEffect(() => {
+        const prevTitle = document.title
+        if (data.title) {
+            document.title = data.title
+        }
 
-    if (isError) {
-        return <div className="alert_container">
-            <Alert colorClassName="danger" content={isError} />
-        </div>
-    }
+        return () => document.title = prevTitle
+    }, [data?.title])
 
     if (!data.cover) {
         data.cover = defaultCover

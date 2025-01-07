@@ -4,6 +4,7 @@ import Spinner from "../../components/Spinner"
 import AddPost from "./AddPost"
 import PostCard from "./PostCard"
 import { usePost } from "../../hooks/usePost"
+import { useEffect } from "react"
 
 export default function Home({ footerRef }) {
 
@@ -20,6 +21,13 @@ export default function Home({ footerRef }) {
         getNextPosts,
         addNewPost
     } = usePost()
+
+    useEffect(() => {
+        const prevTitle = document.title
+        document.title = pageConfig.pageTitle
+
+        return () => document.title = prevTitle
+    }, [])
 
     return <div className="container vstack gap-3 my-3">
         <PageTitle title={pageConfig.pageTitle} />
