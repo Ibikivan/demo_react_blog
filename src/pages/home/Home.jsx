@@ -5,13 +5,13 @@ import AddPost from "./AddPost"
 import PostCard from "./PostCard"
 import { usePost } from "../../hooks/usePost"
 
-export default function Home({footerRef, setActiveNav}) {
+export default function Home({ footerRef }) {
 
     const pageConfig = {
         pageTitle: "Mon blog",
         cartWidth: "18rem"
     }
-    
+
     const {
         posts: dataBuch,
         isLoading,
@@ -20,7 +20,6 @@ export default function Home({footerRef, setActiveNav}) {
         getNextPosts,
         addNewPost
     } = usePost()
-
 
     return <div className="container vstack gap-3 my-3">
         <PageTitle title={pageConfig.pageTitle} />
@@ -32,7 +31,7 @@ export default function Home({footerRef, setActiveNav}) {
         ) : (
             <>
                 <div className="blog_list">
-                    {dataBuch?.map((post) => <PostCard key={post.id} cardWidth={pageConfig.cartWidth} post={post} setActiveNav={setActiveNav} /> )}
+                    {dataBuch?.map((post) => <PostCard key={post.id} cardWidth={pageConfig.cartWidth} post={post} /> )}
                 </div>
 
                 {isLoading && (
@@ -48,7 +47,6 @@ export default function Home({footerRef, setActiveNav}) {
                 {(!isError && (!isDataEmpty && !isLoading)) && <h6 className="see_more text-secondary" onClick={getNextPosts}>{'Afficher plus --->'}</h6>}
             </>
         )}
-
 
         <AddPost footerRef={footerRef} addNewPost={addNewPost} />
     </div>

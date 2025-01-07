@@ -1,6 +1,7 @@
 import { useRef } from "react"
+import { NavLink } from "react-router-dom"
 
-export default function Headers({activeNav, setActiveNav}) {
+export default function Headers() {
 
     const navOptions = [{home: 'Accueille'}, {contact: 'Contact'}]
     const ref = useRef(null)
@@ -11,18 +12,9 @@ export default function Headers({activeNav, setActiveNav}) {
         }
     }
 
-    const setActiveNewNav = (e, page) => {
-        e.preventDefault()
-
-        setActiveNav({
-            page: page,
-            pageData: {}
-        })
-    }
-
     return <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
-            <a className="navbar-brand" href="#" onClick={(e) => setActiveNewNav(e, 'home')}>MonSite</a>
+            <NavLink className="navbar-brand" to={'/'}>MonSite</NavLink>
             <button onClick={toggleNav} className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
@@ -30,9 +22,10 @@ export default function Headers({activeNav, setActiveNav}) {
                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                     {navOptions.map((option, index) => {
                         const [[key, value]] = Object.entries(option)
+                        const target = key === 'home' ? '/' : key
 
-                        return <li key={index} className="nav-item" onClick={(e) => setActiveNewNav(e, key)}>
-                            <a className={`nav-link ${activeNav === key ? 'active' : ''}`} aria-current="page" href="#">{value}</a>
+                        return <li key={index} className="nav-item">
+                            <NavLink className={`nav-link`} aria-current="page" to={`${target}`}>{value}</NavLink>
                         </li>
                     })}
                 </ul>
