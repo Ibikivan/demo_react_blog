@@ -3,6 +3,7 @@ import PageTitle from "../../components/PageTitle"
 import defaultCover from '../../assets/default_cover.png'
 import { useLoaderData, useParams } from "react-router-dom"
 import { useEffect } from "react"
+import { motion } from "framer-motion"
 
 export default function SinglePost() {
 
@@ -26,7 +27,7 @@ export default function SinglePost() {
         
         <PageTitle title={data.title} />
 
-        <img src={data.cover} className="img-fluid img-thumbnail" alt={`${data.title} cover`} />
+        <motion.img layoutId="cover" src={data.cover} className="img-fluid img-thumbnail" alt={`${data.title} cover`} />
         <p className="card-text justify">{data.body}</p>
 
         <Comments postId={id} />
