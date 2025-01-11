@@ -16,9 +16,9 @@ export default function Headers() {
 
     return <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
-            <div className="hstack gap-2">
+            <div className="hstack">
                 <NavLink className="navbar-brand" to={'/'}>MonSite</NavLink>
-                <span className={`badge text-bg-${isOnline ? 'success' : 'danger'} mb-0`}>{isOnline ? "En ligne" : "hors ligne"}</span>
+                <span className={`badge text-bg-${isOnline ? 'success' : 'danger'} mb-0 me-2`}>{isOnline ? "En ligne" : "hors ligne"}</span>
             </div>
             <button onClick={toggleNav} className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>

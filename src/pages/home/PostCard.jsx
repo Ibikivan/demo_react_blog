@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import defaultCoverThumb from '../../assets/default_cover_thumb.png'
+import { motion } from 'framer-motion'
 
 export default function PostCard({cardWidth, post}) {
 
@@ -8,7 +9,7 @@ export default function PostCard({cardWidth, post}) {
     }
 
     return <div className="card" style={{width: cardWidth}}>
-        <img src={post.coverthumb} className="card-img-top" alt={`${post.title} cover`} />
+        <motion.img layoutId='cover' src={post.coverthumb} className="card-img-top" alt={`${post.title} cover`} />
         <div className="card-body">
             <h5 className="card-title">{post.title}</h5>
             <p className="card-text justify">{post.body}</p>
