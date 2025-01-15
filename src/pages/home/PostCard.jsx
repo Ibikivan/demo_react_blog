@@ -9,7 +9,7 @@ export default function PostCard({cardWidth, post}) {
     }
 
     return <div className="card" style={{width: cardWidth}}>
-        <motion.img layoutId='cover' src={post.coverthumb} className="card-img-top" alt={`${post.title} cover`} />
+        <motion.img layoutId={`cover-${post.id}`} src={post.coverthumb} className="card-img-top" alt={`${post.title} cover`} />
         <div className="card-body">
             <h5 className="card-title">{post.title}</h5>
             <p className="card-text justify">{post.body}</p>

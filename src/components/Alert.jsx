@@ -1,10 +1,10 @@
 
 /**
- * @param {{colorClassName: string, content: string}} param0
+ * @param {{colorClassName: string, content: string, otherClass: string, onClick: () => null}} param0
  */
-export default function Alert({colorClassName = 'primary', content = 'Erreur inconnue'}) {
+export default function Alert({colorClassName = 'primary', content = 'Erreur inconnue', otherClass, onClick = () => null}) {
 
-    return <div className={`alert alert-${colorClassName}`} role="alert">
+    return <div onClick={() => onClick()} className={`alert alert-${colorClassName} ${otherClass}`} role="alert">
         {content.toString()}
     </div>
 }

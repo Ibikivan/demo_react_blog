@@ -52,6 +52,8 @@ footer h6 {
 .see_more {
   cursor: pointer;
   transition: all 0.3s ease-in;
+  display: flex;
+  gap: 5px;
 }
 .see_more:hover {
   color: black !important;
@@ -120,4 +122,11 @@ footer h6 {
   justify-content: center;
   align-items: center;
   gap: 1.5rem;
+}
+
+.small_loader {
+  display: flex !important;
+  align-items: center;
+  height: 22px !important;
+  width: 22px !important;
 }
