@@ -3,8 +3,10 @@ import PageTitle from "../../components/PageTitle"
 import Spinner from "../../components/Spinner"
 import AddPost from "./AddPost"
 import PostCard from "./PostCard"
-import { usePost } from "../../hooks/usePost"
 import { useEffect } from "react"
+import { Link } from "react-router-dom"
+import { useInfiniteQuery } from "react-query"
+import { getPosts } from "../../function/api"
 
 export default function Home({ footerRef }) {
 
@@ -13,14 +15,12 @@ export default function Home({ footerRef }) {
         cartWidth: "18rem"
     }
 
-    const {
-        posts: dataBuch,
-        isLoading,
-        isError,
-        isEmptyData: isDataEmpty,
-        getNextPosts,
-        addNewPost
-    } = usePost()
+    const queryKey = ['posts']
+    const { isLoading, data, error, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery(queryKey, ({pageParam}) => getPosts(pageParam), {
+        getNextPageParam: (lastPage, allPages) => lastPage.length > 0 ? allPages.length + 1 : undefined,
+    })
+
+    const posts = data?.pages?.flat() || []
 
     useEffect(() => {
         const prevTitle = document.title
@@ -30,32 +30,27 @@ export default function Home({ footerRef }) {
     }, [])
 
     return <div className="container vstack gap-3 my-3">
-        <PageTitle title={pageConfig.pageTitle} />
+        <div className="hstack gap-3">
+            <PageTitle title={pageConfig.pageTitle} />
+            {(isFetching && !isLoading) && <Spinner />}
+        </div>
 
-        {(isLoading && dataBuch.length < 0) ? (
-            <div className="spinner_container">
-                <Spinner colorClassName='primary' />
-            </div>
-        ) : (
-            <>
-                <div className="blog_list">
-                    {dataBuch?.map((post) => <PostCard key={post.id} cardWidth={pageConfig.cartWidth} post={post} /> )}
-                </div>
+        <Link to='tests'>Page de tests</Link>
 
-                {isLoading && (
-                    <div className="spinner spinner_container">
-                        <Spinner colorClassName='primary' />
-                    </div>
-                )}
+        {isLoading && <Spinner otherClass='mx-auto' />}
+        {error && <Alert colorClassName="danger" content={error} />}
 
-                {(isError && !isLoading) && <div className="alert_container"><Alert colorClassName="danger" content={isError ? isError : undefined} /></div>}
+        <div className="blog_list">
+            {posts?.map((post) => <PostCard key={post.id} cardWidth={pageConfig.cartWidth} post={post} /> )}
+        </div>
 
-                {(isDataEmpty && (!isLoading && !isError)) && <div className="alert_container"><Alert colorClassName="info" content={'Attention: Aucun contenu trouvé'} /></div>}
+        {(!error && posts.length > 0 && hasNextPage) && <h6
+            className="see_more text-secondary"
+            onClick={fetchNextPage}
+            disabled={isFetching}
+        >{'Afficher plus --->'} {isFetching && <Spinner otherClass='small_loader' />}</h6>}
 
-                {(!isError && (!isDataEmpty && !isLoading)) && <h6 className="see_more text-secondary" onClick={getNextPosts}>{'Afficher plus --->'}</h6>}
-            </>
-        )}
-
-        <AddPost footerRef={footerRef} addNewPost={addNewPost} />
+        <AddPost footerRef={footerRef} addNewPost={() => null} />
     </div>
+
 }

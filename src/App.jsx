@@ -6,6 +6,7 @@ import Contact from './pages/contact/Contact'
 import SinglePost from './pages/singlePost/SinglePost'
 import Root from './pages/root/Root'
 import PageNotFound from './pages/not_found/PageNotFound'
+import QueryTests from './pages/test/QueryTests'
 
 function App() {
 
@@ -22,12 +23,15 @@ function App() {
         },
         {
           path: ':id',
-          element: <SinglePost />,
-          loader: ({params}) => fetch(`https://jsonplaceholder.typicode.com/posts/${params.id}`)
+          element: <SinglePost />
         },
         {
           path: 'contact',
           element: <Contact />
+        },
+        {
+          path: 'tests',
+          element: <QueryTests />
         }
       ]
     }
