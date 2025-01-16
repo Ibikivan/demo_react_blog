@@ -18,7 +18,7 @@ export default function Comments({postId}) {
     const queryKey = [`comments-${postId}`]
     let fetchingRef = useRef(null)
 
-    const {isLoading, isFetching, data, error, fetchNextPage, hasNextPage} = useInfiniteQuery(queryKey, ({pageParam}) => getComments(postId, pageParam), {
+    const {isFetching, data, error, fetchNextPage, hasNextPage} = useInfiniteQuery(queryKey, ({pageParam}) => getComments(postId, pageParam), {
         staleTime: 60_000,
         getNextPageParam: (lastPage, allPages) => lastPage.length > 0 ? allPages.length + 1 : undefined,
     })
@@ -29,9 +29,7 @@ export default function Comments({postId}) {
         mutate,
         error: addError,
         reset
-    } = useMutation(async event => {
-        return await addComment(event, postId)
-    }, {
+    } = useMutation(async event => await addComment(event, postId), {
         onSuccess: (comment) => {
             queryClient.setQueryData(queryKey, (comments) => {
                 comments?.pages[0].unshift(comment)
@@ -54,6 +52,12 @@ export default function Comments({postId}) {
     }, [isFetching])
 
 
+    /**
+     * Observe le loader de commentaires pour charger les pasges suivantes s'il est visible
+     * @param {IntersectionObserverEntry} entries 
+     * @param {observer} observer 
+     * @returns {null}
+     */
     const callBack = (entries, observer) => {
 
         if (!spinnerRef.current) {return null}

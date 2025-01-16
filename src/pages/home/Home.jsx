@@ -4,9 +4,9 @@ import Spinner from "../../components/Spinner"
 import AddPost from "./AddPost"
 import PostCard from "./PostCard"
 import { useEffect } from "react"
-import { Link } from "react-router-dom"
 import { useInfiniteQuery } from "react-query"
 import { getPosts } from "../../function/api"
+import { reduceStatement } from "../../function"
 
 export default function Home({ footerRef }) {
 
@@ -18,13 +18,18 @@ export default function Home({ footerRef }) {
     const queryKey = ['posts']
     const { isLoading, data, error, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery(queryKey, ({pageParam}) => getPosts(pageParam), {
         getNextPageParam: (lastPage, allPages) => lastPage.length > 0 ? allPages.length + 1 : undefined,
+        staleTime: 60_000
     })
-
     const posts = data?.pages?.flat() || []
+
+    function handleFetchNextPage() {
+        if (isFetching) return null
+        fetchNextPage()
+    }
 
     useEffect(() => {
         const prevTitle = document.title
-        document.title = pageConfig.pageTitle
+        document.title = reduceStatement(pageConfig.pageTitle, 20)
 
         return () => document.title = prevTitle
     }, [])
@@ -35,8 +40,6 @@ export default function Home({ footerRef }) {
             {(isFetching && !isLoading) && <Spinner />}
         </div>
 
-        <Link to='tests'>Page de tests</Link>
-
         {isLoading && <Spinner otherClass='mx-auto' />}
         {error && <Alert colorClassName="danger" content={error} />}
 
@@ -46,11 +49,10 @@ export default function Home({ footerRef }) {
 
         {(!error && posts.length > 0 && hasNextPage) && <h6
             className="see_more text-secondary"
-            onClick={fetchNextPage}
-            disabled={isFetching}
+            onClick={handleFetchNextPage}
         >{'Afficher plus --->'} {isFetching && <Spinner otherClass='small_loader' />}</h6>}
 
-        <AddPost footerRef={footerRef} addNewPost={() => null} />
+        <AddPost footerRef={footerRef} />
     </div>
 
 }

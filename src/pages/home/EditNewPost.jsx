@@ -1,49 +1,63 @@
-import { forwardRef, useEffect, useId, useRef, useState } from "react";
+import { forwardRef, useId, useRef } from "react";
 import { createPortal } from "react-dom";
 import InputText from "../../components/form/InputText";
 import TextArea from "../../components/form/TextArea";
-import { useFetch } from "../../hooks";
 import Alert from "../../components/Alert";
 import Spinner from "../../components/Spinner";
-import { handleSubmitPost, preventClickBehaviour } from "../../function";
+import { handleAnimCoplete, preventClickBehaviour } from "../../function";
+import { useMutation, useQueryClient } from "react-query";
+import { addNewPost } from "../../function/api";
+import { motion } from "framer-motion";
 
-export default forwardRef(function EditNewPost({closeModal, buttonRef, addNewPost}, ref) {
+const coverVariants = {
+    visible: {opacity: 1},
+    hidden: {opacity: 0}
+}
 
-    const url = new URL('https://jsonplaceholder.typicode.com/posts')
-    const {isLoading, data, isError, fetchData} = useFetch(url.toString(), {
-        method: 'POST',
-        headers: {'Content-type': 'application/json; charset=UTF-8'}
-    })
+const bodyVariants = {
+    visible: {y: 0, opacity: 1},
+    hidden: {y: '-50%', opacity: 0}
+}
+
+export default forwardRef(function EditNewPost({closeModal, isModalOpen}, ref) {
+
+    const queryClient = useQueryClient()
+    const queryKey = ['posts']
     const id = useId()
     const formRef = useRef(null)
-    const [isValidationError, setIsValidationError] = useState(false)
-    const [addedPost, setAddedPost] = useState(null)
 
-    useEffect(() => {
-        if (Object.keys(data).includes("userId")) {
-            addNewPost(data)
-            setAddedPost(data)
-            setTimeout(() => {
-                handleCancled()
-            }, 2000)
+    const {isLoading, mutate, error, reset} = useMutation(async event => await addNewPost(event), {
+        onSuccess: (post) => {
+            queryClient.setQueryData(queryKey, (posts) => {
+                posts?.pages[0]?.unshift(post)
+                return posts
+            })
+            reset()
+            closeModal()
         }
-    }, [data])
-
-    const handleCloseModal = () => {
-        if (!isLoading) {
-            closeModal(ref.current, buttonRef.current)
-        }
-    }
+    })
 
     const handleCancled = () => {
         formRef.current.reset()
-        handleCloseModal()
-        setIsValidationError(false)
-        setAddedPost(null)
+        closeModal()
+        reset()
     }
 
-    return createPortal(<div ref={ref} className="modal modal_cover" tabIndex="-1" onClick={handleCloseModal}>
-        <div className="modal-dialog" onClick={preventClickBehaviour}>
+    return createPortal(<motion.div
+        ref={ref}
+        variants={coverVariants}
+        animate={isModalOpen ? 'visible' : 'hidden'}
+        onAnimationComplete={() => handleAnimCoplete(isModalOpen, ref)}
+        className="modal modal_cover"
+        tabIndex="-1"
+        onClick={closeModal}
+    >
+        <motion.div
+            variants={bodyVariants}
+            animate={isModalOpen ? 'visible' : 'hidden'}
+            className="modal-dialog"
+            onClick={preventClickBehaviour}
+        >
             <div className="modal-content">
                 <div className="modal-header">
                     <h5 className="modal-title">Ajouter un article</h5>
@@ -52,12 +66,12 @@ export default forwardRef(function EditNewPost({closeModal, buttonRef, addNewPos
                         className="btn-close"
                         data-bs-dismiss="modal"
                         aria-label="Close"
-                        onClick={handleCloseModal}
+                        onClick={closeModal}
                         disabled={isLoading ? true : false}
                     ></button>
                 </div>
                 <div className="modal-body">
-                    <form ref={formRef} id={id} onSubmit={(e) => handleSubmitPost(e, fetchData, setIsValidationError)}>
+                    <form ref={formRef} id={id} onSubmit={mutate}>
                         <InputText
                             type="text"
                             label="Titre du post"
@@ -77,9 +91,7 @@ export default forwardRef(function EditNewPost({closeModal, buttonRef, addNewPos
                 <div className="modal-footer d-flex">
                     <div className="modal_alert_container">
                         {isLoading && <Spinner colorClassName="primary" /> }
-                        {(addedPost && !isLoading) && <Alert colorClassName="success" content={'SUCCESS: Post ajouté'} /> }
-                        {(isError && (!isLoading && !addedPost)) && <Alert colorClassName="danger" content={isError} /> }
-                        {(isValidationError && (!isLoading && !isError && !addedPost)) && <Alert colorClassName="warning" content={isValidationError} /> }
+                        {error && <Alert colorClassName="danger" content={error} /> }
                     </div>
                     <button
                         type="button"
@@ -95,6 +107,7 @@ export default forwardRef(function EditNewPost({closeModal, buttonRef, addNewPos
                     >Ajouter</button>
                 </div>
             </div>
-        </div>
-    </div>, document.body)
+        </motion.div>
+    </motion.div>, document.body)
+
 })

@@ -14,7 +14,7 @@ export default function Headers() {
         }
     }
 
-    return <nav className="navbar navbar-expand-lg bg-body-tertiary">
+    return <nav className="navbar navbar-expand-lg bg-body-tertiary sticky_nav">
         <div className="container-fluid">
             <div className="hstack">
                 <NavLink className="navbar-brand" to={'/'}>MonSite</NavLink>

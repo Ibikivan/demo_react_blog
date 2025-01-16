@@ -1,10 +1,10 @@
-import { NavLink } from "react-router-dom";
 import Button from "../../components/form/Button";
 import CheckBox from "../../components/form/CheckBox";
 import InputText from "../../components/form/InputText";
 import TextArea from "../../components/form/TextArea";
 import PageTitle from "../../components/PageTitle";
 import { useEffect } from "react";
+import { reduceStatement } from "../../function";
 
 export default function Contact() {
 
@@ -14,7 +14,7 @@ export default function Contact() {
 
     useEffect(() => {
         const prevTitle = document.title
-        document.title = pageConfig.pageTitle
+        document.title = reduceStatement(pageConfig.pageTitle, 20)
 
         return () => document.title = prevTitle
     }, [])
@@ -30,7 +30,6 @@ export default function Contact() {
         })
 
         console.log(body)
-
         e.target.reset()
     }
 

@@ -8,18 +8,21 @@ import { useQuery } from "react-query"
 import { getPost } from "../../function/api"
 import Spinner from "../../components/Spinner"
 import Alert from "../../components/Alert"
+import { reduceStatement } from "../../function"
 
 export default function SinglePost() {
 
     const { id } = useParams()
 
     const queryKey = ['posts', `post-${id}`]
-    const { isLoading, data: post, error } = useQuery(queryKey, () => getPost(id))
+    const { isLoading, data: post, error } = useQuery(queryKey, () => getPost(id), {
+        staleTime: 60_000
+    })
 
     useEffect(() => {
         const prevTitle = document.title
         if (post?.title) {
-            document.title = post.title
+            document.title = reduceStatement(post.title, 20)
         }
 
         return () => document.title = prevTitle
