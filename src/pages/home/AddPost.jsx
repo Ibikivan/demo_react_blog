@@ -1,13 +1,27 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import add from '../../assets/add.svg'
-import EditNewPost from './EditNewPost'
-import { handleCloseModal, handleOpenModal } from '../../function'
 import { useIntersecting } from '../../hooks'
+import { motion } from 'framer-motion'
+import EditNewPost from './EditNewPost'
 
-export default function AddPost({footerRef, addNewPost}) {
+const buttonVariants = {
+    visible: {rotate: 0, opacity: 1, scale: 1},
+    hidden: {rotate: 180, opacity: 0, scale: .8}
+}
 
+export default function AddPost({footerRef}) {
+
+    const [isModalOpen, setIsModalOpen] = useState(false)
     const modalRef = useRef(null)
     const buttonRef = useRef(null)
+
+    function toggleIsModalOpen() {
+        if (!isModalOpen) {
+            modalRef.current.style.display = 'block'
+        }
+
+        setIsModalOpen(isOpen => !isOpen)
+    }
     
     /**
      * Intersection observer callBak
@@ -36,10 +50,17 @@ export default function AddPost({footerRef, addNewPost}) {
     useIntersecting(footerRef, callBack)
 
     return <div>
-        <button ref={buttonRef} className='add_post bg-primary' onClick={() => handleOpenModal(modalRef.current, buttonRef.current)}>
+        <motion.button
+            ref={buttonRef}
+            variants={buttonVariants}
+            animate={isModalOpen ? 'hidden' : 'visible'}
+            whileHover={{scale: 1.03}}
+            className='add_post bg-primary'
+            onClick={toggleIsModalOpen}
+        >
             <img src={add} alt="add icon" />
-        </button>
+        </motion.button>
 
-        <EditNewPost closeModal={handleCloseModal} ref={modalRef} buttonRef={buttonRef} addNewPost={addNewPost} />
+        <EditNewPost closeModal={toggleIsModalOpen} ref={modalRef} isModalOpen={isModalOpen} />
     </div>
 }

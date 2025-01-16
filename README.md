@@ -8,7 +8,7 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
 # This is a soft working in progress demo to give an overview of my react and Js mastering skill (v: 1.0)
-Some quality of life tools and best practice options are in curent dev...
+Some optimizations are still in dev progress...
 
 Feel free to take contact throw the following to see more or for any needs
 # Author: Roche Ngaleu,
@@ -27,6 +27,8 @@ bootstrap@5.3.3
 react + Vite
 react-router-dom@7.1.1
 react-error-boundary@5.0.0
+react-query@5.64.1
+framer-motion@11.16.4
 
 # Extract de folder in file using any extrator tool like winrar
 # Open the extracted folder using shell tool like vscode

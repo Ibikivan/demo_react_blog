@@ -60,7 +60,7 @@ export async function addComment(event, postId) {
         ...Object.fromEntries(formData)
     }
 
-    const res = await fetch(baseUrl + `/comments`, {
+    const res = await fetch(baseUrl + `/posts/${postId}/comments`, {
         headers: {
             'Accept': 'application/json; charset=UTF-8',
             'Content-Type': 'application/json; charset=UTF-8'
@@ -71,6 +71,33 @@ export async function addComment(event, postId) {
 
     if (!res?.ok) throw new Error('Une erreur est survenue', {cause: res})
 
+    event.target.reset()
+    return res.json()
+}
+
+/**
+ * Ajoute un article à la liste des posts
+ * @param {SubmitEvent} event 
+ * @returns {object}
+ */
+export async function addNewPost(event) {
+    event.preventDefault()
+    const formData = new FormData(event.target)
+
+    if (!formData.get('title')) throw new Error("Ajoutez un titre à l'aricle")
+    formData.set('userId', '1')
+    const data = {...Object.fromEntries(formData)}
+
+    const res = await fetch(baseUrl + '/posts', {
+        headers: {
+            'Accept': 'application/json; charset=UTF-8',
+            'Content-Type': 'application/json; charset=UTF-8'
+        },
+        method: 'POST',
+        body: JSON.stringify(data)
+    })
+
+    if (!res?.ok) throw new Error('Une erreur est survenue', {cause: res})
     event.target.reset()
     return res.json()
 }
