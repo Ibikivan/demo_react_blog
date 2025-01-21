@@ -1,5 +1,5 @@
 
-const baseUrl = 'https://jsonplaceholder.typicode.com'
+const baseUrl = window.location.origin + '/api'
 
 /**
  * Obtenir la liste des poste de la page et de la limite spécifiée
