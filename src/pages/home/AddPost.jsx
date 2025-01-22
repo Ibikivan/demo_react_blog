@@ -29,11 +29,12 @@ export default function AddPost({footerRef}) {
      * @param {IntersectionObserver} observer 
      */
     const callBack = function (entries, observer) {
-        if (!modalRef.current) {return null}
-        
+        if (!modalRef.current || !buttonRef.current) return
+
         entries.forEach((entry) => {
             const targetedPosition = entry.boundingClientRect.top + window.scrollY
-            const buttonTop = buttonRef.current.getBoundingClientRect().top - buttonRef.current.getBoundingClientRect().height
+            const buttonRect = buttonRef.current.getBoundingClientRect()
+            const buttonTop = buttonRect.top + window.scrollY - buttonRect.height
 
             if (entry.isIntersecting) {
                 buttonRef.current.style.position = 'absolute'
