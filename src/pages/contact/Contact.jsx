@@ -4,7 +4,7 @@ import InputText from "../../components/form/InputText";
 import TextArea from "../../components/form/TextArea";
 import PageTitle from "../../components/PageTitle";
 import { useEffect } from "react";
-import { reduceStatement } from "../../function";
+import { handleSumbitContact, reduceStatement } from "../../function";
 
 export default function Contact() {
 
@@ -19,26 +19,12 @@ export default function Contact() {
         return () => document.title = prevTitle
     }, [])
 
-    const handleSumbitForm = (e) => {
-        e.preventDefault()
-        const formData = new FormData(e.target)
-        const body = Object.assign({}, {
-            email: formData.get('email'),
-            title: formData.get('title'),
-            body: formData.get('body'),
-            contactMe: formData.get('contact-me')
-        })
-
-        console.log(body)
-        e.target.reset()
-    }
-
     return <div className="container vstack gap-3 my-3">
         
         <PageTitle title={pageConfig.pageTitle} />
         <p className="text-start">Merci de me contacter, je suis anthousiaste à l'idée de lire ce que vous avez à dire.</p>
         
-        <form className="contact_form" onSubmit={handleSumbitForm}>
+        <form className="contact_form" onSubmit={handleSumbitContact}>
             <InputText label="Email" name="email" type="email" placeHolder="Entrez votre Email..." />
 
             <fieldset>
