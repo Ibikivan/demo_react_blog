@@ -33,7 +33,7 @@ export default forwardRef(function Footer({}, ref) {
     return <footer ref={ref} className="bg-secondary p-5">
         <div className="mentions">
             <h5>Mentions et technos</h5>
-            <p>Ceci est une application de démonstration, mini-blog basé sur l'api de <a href="https://jsonplaceholder.typicode.com/" target="_blank">jsonplaceholder</a> et mettant en oeuvre un apperçus de fonctionnalités et bibliotheques clé de l'environement REACT.Js :</p>
+            <p>Ceci est une application de démonstration : un mini-blog basé sur l'API de <a href="https://jsonplaceholder.typicode.com/" target="_blank">JSONPlaceholder</a>, mettant en œuvre un aperçu des fonctionnalités et des bibliothèques clés de l'environnement React.js.</p>
 
             <div className="pastille_group">
                 {footerPastilles.map((pastille, index) => <FooterPastille key={`${pastille.packageName}-${index}`} pastille={pastille} />)}
