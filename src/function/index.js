@@ -45,3 +45,25 @@ export function handleScroll(reference, relativeElement, margin) {
 
     relativeElement.style.top = `${intersecting ? movingY: fixedY}px`
 }
+
+/**
+ * @param {SubmitEvent} e 
+ */
+export const handleSumbitContact = (e) => {
+    e.preventDefault()
+    const formData = new FormData(e.target)
+    const body = Object.assign({}, {
+        email: formData.get('email'),
+        title: formData.get('title'),
+        body: formData.get('body'),
+        contactMe: formData.get('contact-me')
+    })
+
+    const mailtoLink = `mailto:ibikivan1@gmail.com?subject=${encodeURIComponent(
+    body.title
+    )}&body=${encodeURIComponent(`De : ${body.email}\n\n${body.body}`)}`;
+
+    // Ouvrir le client de messagerie
+    window.location.href = mailtoLink;
+    e.target.reset()
+}
