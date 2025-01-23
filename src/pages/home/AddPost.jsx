@@ -1,8 +1,8 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import add from '../../assets/add.svg'
-import { useIntersecting } from '../../hooks'
 import { motion } from 'framer-motion'
 import EditNewPost from './EditNewPost'
+import { handleScroll } from '../../function'
 
 const buttonVariants = {
     visible: {rotate: 0, opacity: 1, scale: 1},
@@ -22,33 +22,16 @@ export default function AddPost({footerRef}) {
 
         setIsModalOpen(isOpen => !isOpen)
     }
-    
-    /**
-     * Intersection observer callBak
-     * @param {IntersectionObserverEntry} entries 
-     * @param {IntersectionObserver} observer 
-     */
-    const callBack = function (entries, observer) {
-        if (!modalRef.current || !buttonRef.current) return
 
-        entries.forEach((entry) => {
-            const targetedPosition = entry.boundingClientRect.top + window.scrollY
-            const buttonRect = buttonRef.current.getBoundingClientRect()
-            const buttonTop = buttonRect.top + window.scrollY - buttonRect.height
+    useEffect(() => {
+        if (footerRef && buttonRef) {
+            window.addEventListener('scroll', () => handleScroll(footerRef.current, buttonRef.current, 100))
 
-            if (entry.isIntersecting) {
-                buttonRef.current.style.position = 'absolute'
-                buttonRef.current.style.bottom = '0'
-                buttonRef.current.style.top = `${targetedPosition - buttonTop}px`
-            } else {
-                buttonRef.current.style.position = ''
-                buttonRef.current.style.bottom = ''
-                buttonRef.current.style.top = ''
+            return () => {
+                window.removeEventListener('scroll', () => handleScroll(footerRef.current, buttonRef.current, 100))
             }
-        })
-    }
-    
-    useIntersecting(footerRef, callBack)
+        }
+    }, [])
 
     return <div>
         <motion.button
