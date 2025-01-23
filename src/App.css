@@ -66,6 +66,10 @@ footer {
   margin-top: 4em;
 }
 
+.footer_others div {
+  word-break: break-all;
+}
+
 .pastille {
   display: flex;
   align-items: center;
