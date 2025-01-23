@@ -59,6 +59,7 @@ footer {
 .footer_others {
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
   padding: 4em;
   border-top: solid white 2px;
