@@ -35,6 +35,11 @@ export default forwardRef(function Footer({}, ref) {
             <h5>Mentions et technos</h5>
             <p>Ceci est une application de démonstration : un mini-blog basé sur l'API de <a href="https://jsonplaceholder.typicode.com/" target="_blank">JSONPlaceholder</a>, mettant en œuvre un aperçu des fonctionnalités et des bibliothèques clés de l'environnement React.js.</p>
 
+            <div>
+                <h6>Points à considérer :</h6>
+                <p>Comportement et UX - Performance et Optimisations - Gestion des Erreurs - Efficacité et Propreté du <a href="https://github.com/Ibikivan/demo_react_blog.git" target="_blank">code</a> - Fonctionalité Js et React avancés</p>
+            </div>
+
             <div className="pastille_group">
                 {footerPastilles.map((pastille, index) => <FooterPastille key={`${pastille.packageName}-${index}`} pastille={pastille} />)}
             </div>
